@@ -1,26 +1,249 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #080808;
+    --foreground: #f5f3ef;
+    --ora-gold: #d9a441;
+    --ora-gold-bright: #ffa600;
+    --ora-warm: #e29e3e;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    /* next/font injects --font-inter */
+    --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background: var(--background);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    min-height: 100dvh;
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+::selection {
+    background: rgba(217, 164, 65, 0.32);
+    color: #fffaf1;
+}
+
+@keyframes ambient-drift-a {
+    0%,
+    100% {
+        transform: translate3d(-4%, -2%, 0) scale(1);
+    }
+
+    50% {
+        transform: translate3d(7%, 5%, 0) scale(1.08);
+    }
+}
+
+@keyframes ambient-drift-b {
+    0%,
+    100% {
+        transform: translate3d(5%, 4%, 0) scale(1.06);
+    }
+
+    50% {
+        transform: translate3d(-7%, -5%, 0) scale(0.96);
+    }
+}
+
+@keyframes firefly-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: var(--particle-opacity);
+    }
+
+    50% {
+        transform: translate3d(var(--particle-x), -18px, 0);
+        opacity: calc(var(--particle-opacity) * 0.45);
+    }
+}
+
+@keyframes streak-glide {
+    0%,
+    100% {
+        transform: translate3d(-3%, 0, 0) rotate(-18deg);
+        opacity: 0.2;
+    }
+
+    50% {
+        transform: translate3d(5%, -8px, 0) rotate(-18deg);
+        opacity: 0.42;
+    }
+}
+
+@keyframes dashboard-dust-drift {
+    0%,
+    100% {
+        opacity: calc(var(--particle-opacity) * 0.58);
+        transform: translate3d(0, 0, 0) scale(0.9);
+    }
+
+    50% {
+        opacity: var(--particle-opacity);
+        transform: translate3d(var(--particle-x), -14px, 0) scale(1.08);
+    }
+}
+
+.ambient-glow-a {
+    animation: ambient-drift-a 18s ease-in-out infinite;
+}
+
+.ambient-glow-b {
+    animation: ambient-drift-b 22s ease-in-out infinite;
+}
+
+.ambient-streak {
+    animation: streak-glide 16s ease-in-out infinite;
+}
+
+.firefly {
+    animation: firefly-float
+    var(--particle-duration)
+    ease-in-out
+    var(--particle-delay)
+    infinite;
+}
+
+.dashboard-dust {
+    animation: dashboard-dust-drift var(--particle-duration) ease-in-out var(--particle-delay) infinite;
+    box-shadow: 0 0 18px 7px rgba(255, 185, 70, 0.22);
+    will-change: transform, opacity;
+}
+
+.ora-glass-panel {
+    -webkit-backdrop-filter: blur(20px) saturate(135%);
+    backdrop-filter: blur(20px) saturate(135%);
+}
+
+.dashboard-noise {
+    background-image:
+            repeating-radial-gradient(circle at 17% 28%, rgba(255, 255, 255, 0.38) 0 0.45px, transparent 0.7px 3px),
+            repeating-radial-gradient(circle at 76% 64%, rgba(217, 164, 65, 0.3) 0 0.4px, transparent 0.65px 4px);
+    background-size: 5px 5px, 7px 7px;
+    mix-blend-mode: soft-light;
+}
+
+.ora-tilt-card {
+    --ora-pointer-x: 50%;
+    --ora-pointer-y: 50%;
+    isolation: isolate;
+    will-change: transform;
+}
+
+.ora-tilt-card::after {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+            circle at var(--ora-pointer-x) var(--ora-pointer-y),
+            rgba(235, 175, 66, 0.085),
+            transparent 44%
+    );
+    opacity: 0;
+    transition: opacity 320ms ease;
+    pointer-events: none;
+    content: "";
+}
+
+.ora-tilt-card:hover::after {
+    opacity: 1;
+}
+
+.ora-tilt-card > * {
+    z-index: 1;
+}
+
+.ora-depth-icon {
+    transform: translateZ(12px);
+}
+
+.ora-depth-copy {
+    transform: translateZ(8px);
+}
+
+.auth-glass {
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    backdrop-filter: blur(30px) saturate(150%);
+}
+
+.auth-glass::before {
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(
+            130deg,
+            rgba(255, 255, 255, 0.095),
+            transparent 30%,
+            transparent 70%,
+            rgba(217, 164, 65, 0.045)
+    );
+    pointer-events: none;
+    content: "";
+}
+
+.auth-glass::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background:
+            radial-gradient(
+                    circle at 18% 0%,
+                    rgba(255, 255, 255, 0.09),
+                    transparent 34%
+            ),
+            radial-gradient(
+                    circle at 92% 100%,
+                    rgba(217, 164, 65, 0.06),
+                    transparent 38%
+            );
+    mix-blend-mode: screen;
+    pointer-events: none;
+    content: "";
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+
+    .ambient-glow-a,
+    .ambient-glow-b,
+    .ambient-streak,
+    .firefly,
+    .dashboard-dust {
+        animation: none !important;
+    }
+
+    .ora-tilt-card,
+    .ora-depth-icon,
+    .ora-depth-copy {
+        transform: none !important;
+        will-change: auto;
+    }
+
+    .ora-tilt-card::after {
+        display: none;
+    }
 }
